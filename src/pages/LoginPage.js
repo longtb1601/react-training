@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect, useHistory } from "react-router-dom";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
@@ -29,7 +29,6 @@ const LoginPage = () => {
 
         if(validateEmail === true && validatePassword === true) {
             axios.get('https://60dff0ba6b689e001788c858.mockapi.io/token').then(response => {
-                console.log(response.data);
                 setUser(response.data);
             })
         }

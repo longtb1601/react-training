@@ -20,8 +20,8 @@ const PostsPage = () => {
 
     return (
         <div>
-            <input type="text" placeholder="Search by title" value={searchText} onChange={evt => setSearchText(evt.target.value)} />
-            <table className="table">
+            <input className="form-control" type="text" placeholder="Search by title" value={searchText} onChange={evt => setSearchText(evt.target.value)} />
+            <table className="table table-border">
                 <thead>
                     <tr>
                         <th>ID</th>
