@@ -7,7 +7,7 @@ import LoginFormPage from "./pages/LoginFormPage/LoginFormPage";
 import PostPage from "./pages/PostPage/PostPage";
 import PostsPage from "./pages/PostsPage/PostsPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
-import { Container, Nav } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -27,35 +27,25 @@ const App = () => {
   return (
     <Container>
       <Router>
-        <Nav defaultActiveKey="/" as="ul">
-          <Nav.Item as="li">
+        <Navbar bg="dark" variant="dark" className="mb-5">
+          <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
-          </Nav.Item>
-          <Nav.Item as="li">
             <Nav.Link href="/posts">Posts</Nav.Link>
-          </Nav.Item>
-          <Nav.Item as="li">
             <Nav.Link href="/profile">Profile</Nav.Link>
-          </Nav.Item>
-          <Nav.Item as="li">
             {currentUser.userId === null && (
               <Nav.Link href="/login">Login</Nav.Link>
             )}
-          </Nav.Item>
-          <Nav.Item as="li">
             {currentUser.userId === null && (
               <Nav.Link href="/register">Register</Nav.Link>
             )}
-          </Nav.Item>
-          <Nav.Item as="li">
             {currentUser.userId !== null && (
               <Nav.Link href="/logout" onClick={() => {
                 logout();
                 axios.defaults.headers.common['Authorization'] = '';
               }}>Logout</Nav.Link>
             )}
-          </Nav.Item>
-        </Nav>
+          </Nav>
+        </Navbar>
         <Switch>
           <Route path="/" exact>
             <HomePage />
