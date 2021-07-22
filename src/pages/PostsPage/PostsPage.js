@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Form} from "react-bootstrap";
 import axios from 'axios';
 
 const PostsPage = () => {
@@ -20,13 +21,15 @@ const PostsPage = () => {
 
     return (
         <div>
-            <input className="form-control" type="text" placeholder="Search by title" value={searchText} onChange={evt => setSearchText(evt.target.value)} />
-            <table className="table table-border">
+            <Form.Group controlId="validationFormik102" className="mb-3">
+                <input className="form-control" type="text" placeholder="Search by title" value={searchText} onChange={evt => setSearchText(evt.target.value)} />
+            </Form.Group>
+            <table className="table table-bordered">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Action</th>
+                        <th className="text-center">ID</th>
+                        <th className="text-center">Title</th>
+                        <th className="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>

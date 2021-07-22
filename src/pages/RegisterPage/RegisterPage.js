@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Formik } from "formik";
 import { Form, Button, Row, Col } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
-const initialValues = { email: "", password: "" };
+const initialValues = { email: "", password: "", re_password: "", name: ""};
 
 const validateValues = (values) => {
     const errors = {};
@@ -18,31 +18,28 @@ const validateValues = (values) => {
         errors.password = "Password must be at least 8 characters";
     }
 
+    if(!values.name) {
+        errors.name = "Name is required";
+    }
+
+    if(values.re_password !== values.password || values.re_password.length < 8) {
+        errors.re_password = "Re-enter password not matching with password";
+    }
+
     return errors;
 };
 
-const LoginFormPage = ({ setCurrentUser, title }) => {
-    const onSubmit = (values, { setSubmitting }) => {
-        axios.get("https://60dff0ba6b689e001788c858.mockapi.io/token", {
-            email: values.email,
-            password: values.password,
-        })
-            .then((response) => {
-                setSubmitting(false);
-                setCurrentUser({
-                    token: response.data.token,
-                    userId: response.data.userId,
-                });
+const RegisterPage = () => {
+    const history = useHistory();
 
-                axios.defaults.headers.common["Authorization"] = response.data.token;
-            });
+    const onSubmit = (values, { setSubmitting }) => {
+        history.push("/login");
     };
 
     return (
         <div className="login-form container">
             <div className="text-center">
-                <h3>Login</h3>
-                {title && <h5>{title}</h5>}
+                <h3>Register</h3>
             </div>
             <Formik
                 initialValues={initialValues}
@@ -101,6 +98,44 @@ const LoginFormPage = ({ setCurrentUser, title }) => {
                                     </Form.Control.Feedback>
                                 </Form.Group>
 
+                                <Form.Group className="mb-3" controlId="formBasicPassword">
+                                    <Form.Control
+                                        type="password"
+                                        placeholder="Re-enter password"
+                                        name="re_password"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        isInvalid={touched.re_password && errors.re_password}
+                                        isValid={touched.re_password && !errors.re_password}
+                                        value={values.re_password}
+                                    />
+                                    <Form.Control.Feedback type="valid">
+                                        Look good
+                                    </Form.Control.Feedback>
+                                    <Form.Control.Feedback type="invalid" className="d-block">
+                                        {errors.re_password}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+
+                                <Form.Group className="mb-3" controlId="formBasicPassword">
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Your name"
+                                        name="name"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        isInvalid={touched.name && errors.name}
+                                        isValid={touched.name && !errors.name}
+                                        value={values.name}
+                                    />
+                                    <Form.Control.Feedback type="valid">
+                                        Look good
+                                    </Form.Control.Feedback>
+                                    <Form.Control.Feedback type="invalid" className="d-block">
+                                        {errors.name}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+
                                 <Button variant="primary" type="submit">
                                     Submit
                                 </Button>
@@ -113,4 +148,4 @@ const LoginFormPage = ({ setCurrentUser, title }) => {
     );
 };
 
-export default LoginFormPage;
+export default RegisterPage;

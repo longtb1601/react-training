@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route, Link, Redirect, useLocation } from "react-router-dom";
 import axios from "axios";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/HomePage/HomePage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import LoginFormPage from "./pages/LoginFormPage/LoginFormPage";
-import PostPage from "./pages/PostPage";
-import PostsPage from "./pages/PostsPage";
+import PostPage from "./pages/PostPage/PostPage";
+import PostsPage from "./pages/PostsPage/PostsPage";
+import RegisterPage from "./pages/RegisterPage/RegisterPage";
+import { Container, Nav } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -23,39 +25,37 @@ const App = () => {
   const logout = () => setCurrentUser(initialCurrentUser);
 
   return (
-    <div className="app container">
+    <Container>
       <Router>
-        <ul className="top-nav">
-          <li className="top-nav-item">
-            <Link to="/">Home</Link>
-          </li>
-          <li className="top-nav-item">
-            <Link to="/posts">Posts</Link>
-          </li>
-          <li className="top-nav-item">
-            <Link to="/profile">Profile</Link>
-          </li>
-          <li className="top-nav-item">
-          {currentUser.userId === null && (
-            <Link className="btn btn-primary"
-              to='/login'
-            >
-              Login
-            </Link>
-          )}
-          {currentUser.userId !== null && (
-            <button
-              className="btn btn-danger"
-              onClick={() => {
+        <Nav defaultActiveKey="/" as="ul">
+          <Nav.Item as="li">
+            <Nav.Link href="/">Home</Nav.Link>
+          </Nav.Item>
+          <Nav.Item as="li">
+            <Nav.Link href="/posts">Posts</Nav.Link>
+          </Nav.Item>
+          <Nav.Item as="li">
+            <Nav.Link href="/profile">Profile</Nav.Link>
+          </Nav.Item>
+          <Nav.Item as="li">
+            {currentUser.userId === null && (
+              <Nav.Link href="/login">Login</Nav.Link>
+            )}
+          </Nav.Item>
+          <Nav.Item as="li">
+            {currentUser.userId === null && (
+              <Nav.Link href="/register">Register</Nav.Link>
+            )}
+          </Nav.Item>
+          <Nav.Item as="li">
+            {currentUser.userId !== null && (
+              <Nav.Link href="/logout" onClick={() => {
                 logout();
                 axios.defaults.headers.common['Authorization'] = '';
-              }}
-            >
-              Logout
-            </button>
-          )}
-          </li>
-        </ul>
+              }}>Logout</Nav.Link>
+            )}
+          </Nav.Item>
+        </Nav>
         <Switch>
           <Route path="/" exact>
             <HomePage />
@@ -80,10 +80,13 @@ const App = () => {
           <Route path="/login" exact>
             <LoginFormPage setCurrentUser={setCurrentUser} />
           </Route>
+          <Route path="/register" exact>
+            <RegisterPage />
+          </Route>
         </Switch>
       </Router>
 
-    </div>
+    </Container>
   );
 }
 
